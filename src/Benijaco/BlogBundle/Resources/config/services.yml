@@ -1,0 +1,7 @@
+parameters:
+#    benijaco_blog.example.class: Benijaco\BlogBundle\Example
+
+services:
+#    benijaco_blog.example:
+#        class: %benijaco_blog.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
