@@ -1,6 +1,3 @@
-benijaco_blog_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: BenijacoBlogBundle:Default:index }
 HelloTheWorld:
     pattern:  /hello-world
     defaults: { _controller: BenijacoBlogBundle:Blog:index }
