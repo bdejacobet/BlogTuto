@@ -1,11 +1,27 @@
-benijacoblog_accueil:
-    pattern:   /
-    defaults:  { _controller: BenijacoBlogBundle:Blog:index }
-     
-benijacoblog_voir:
+benijaco_accueil:
+    pattern:   /{page}
+    defaults:  { _controller: BenijacoBlogBundle:Blog:index, page: 1 }
+    requirements:
+        page:  \d*
+
+benijaco_voir:
     pattern:   /article/{id}
     defaults:  { _controller: BenijacoBlogBundle:Blog:voir }
-     
-benijacoblog_ajouter:
+    requirements:
+        id:  \d+
+
+benijaco_ajouter:
     pattern:   /ajouter
     defaults:  { _controller: BenijacoBlogBundle:Blog:ajouter }
+
+benijaco_modifier:
+    pattern:   /modifier/{id}
+    defaults:  { _controller: BenijacoBlogBundle:Blog:modifier }
+    requirements:
+        id:  \d+
+
+benijaco_supprimer:
+    pattern:   /supprimer/{id}
+    defaults:  { _controller: BenijacoBlogBundle:Blog:supprimer }
+    requirements:
+        id:  \d+

@@ -16,4 +16,19 @@ class BlogController extends Controller
     {
         return new Response("Affichage de l'article d'id : ".$id.".");
     }
+    
+    public function ajouterAction()
+    {
+        return new Response("Ajout d'un article");
+    }
+    
+    public function modifierAction($id)
+    {
+        return new Response("Modification de l'article d'id : ".$id.".");
+    }
+    
+    public function supprimerAction($id)
+    {
+        return new Response("Suppression de l'article d'id : ".$id.".");
+    }
 }
