@@ -1,22 +1,31 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Bienvenue sur ma première page avec le Site du Zéro !</title>
-  </head>
-  <body>
-    <h1>Lecture d'un article</h1>
+{% extends "BenijacoBlogBundle::layout.html.twig" %}
  
-    <p>
-      {# On affiche tous les messages flash dont le nom est « info » #}
-             
-      {% for message in app.session.flashbag.get('info') %}
-        <p>{{ message }}</p>
-      {% endfor %}
-    </p>
+{% block title %}
+  Lecture d'un article - {{ parent() }}
+{% endblock %}
  
-    <p>
-      Ici nous pourrons lire l'article ayant comme id : {{ id }}<br />
-      Mais pour l'instant, nous ne savons pas encore le faire, cela viendra !
-    </p>
-  </body>
-</html>
+{% block benijacoblog_body %}
+ 
+  <h2>{{ article.titre }}</h2>
+  <i>Par {{ article.auteur }}, le {{ article.date|date('d/m/Y') }}</i>
+ 
+  <div class="well">
+    {{ article.contenu }}
+  </div>
+ 
+  <p>
+    <a href="{{ path('benijacoblog_accueil') }}" class="btn">
+      <i class="icon-chevron-left"></i>
+      Retour à la liste
+    </a>
+    <a href="{{ path('benijacoblog_modifier', {'id': article.id}) }}" class="btn">
+      <i class="icon-edit"></i>
+      Modifier l'article
+    </a>
+    <a href="{{ path('benijacoblog_supprimer', {'id': article.id}) }}" class="btn">
+      <i class="icon-trash"></i>
+      Supprimer l'article
+    </a>
+  </p>
+ 
+{% endblock %}
