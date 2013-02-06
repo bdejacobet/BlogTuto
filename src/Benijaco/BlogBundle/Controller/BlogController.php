@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Benijaco\BlogBundle\Entity\Article;
 use Benijaco\BlogBundle\Entity\Image;
+use Benijaco\BlogBundle\Entity\Commentaire;
+use Benijaco\BlogBundle\Entity\Categorie;
 
 class BlogController extends Controller
 {
