@@ -90,6 +90,8 @@ class BlogController extends Controller
 
         // On récupére l'EntityManager
         $em = $this->getDoctrine()->getManager();
+        
+        
 
         // Etape 1 : On « persiste » l'entité
         $em->persist($article);
@@ -116,14 +118,32 @@ class BlogController extends Controller
     public function modifierAction($id)
     {
         
-        // Ici, on récupérera les données de l'articles
-        $article = array(
-            'id'      => 1,
-            'titre'   => 'Mon weekend a Phi Phi Island !',
-            'auteur'  => 'winzou',
-            'contenu' => 'Ce weekend était trop bien. Blabla…',
-            'date'    => new \Datetime()
-        );
+        // On récupère l'EntityManager
+        $em = $this->getDoctrine()
+        ->getManager();
+
+        // On récupère l'entité correspondant à l'id $id
+        $article = $em->getRepository('BenijacoBlogBundle:Article')
+        ->find($id);
+
+        // si l'article n'existe pas
+        if($article === null)
+        {
+            throw $this->createNotFoundException('Article[id='.$id.'] inexistant.');
+        }
+
+        // On récupère toutes les catégories :
+        $liste_categories = $em->getRepository('BenijacoBlogBundle:Categorie')
+        ->findAll();
+
+        // On boucle sur les catégories pour les lier à l'article
+        foreach($liste_categories as $categorie)
+        {
+            $article->addCategorie($categorie);
+        }
+
+        // On déclenche l'enregistrement
+        $em->flush();
 
         return $this->render('BenijacoBlogBundle:Blog:modifier.html.twig', array(
             'article' => $article
@@ -132,9 +152,32 @@ class BlogController extends Controller
 
     public function supprimerAction($id)
     {
-        // Ici, on récupérera l'article correspondant à l'$id
+        
+        // On récupère l'EntityManager
+        $em = $this->getDoctrine()
+                   ->getManager();
 
-        // Ici, on gérera la suppression de l'article en question
+        // On récupère l'entité correspondant à l'id $id
+        $article = $em->getRepository('SdzBlogBundle:Article')
+                      ->find($id);
+
+        if($article === null)
+        {
+            throw $this->createNotFoundException('Article[id='.$id.'] inexistant.');
+        }
+
+        // On récupère toutes les catégories :
+        $liste_categories = $em->getRepository('SdzBlogBundle:Categorie')
+                               ->findAll();
+
+        // On enlève toutes ces catégories de l'article
+        foreach($liste_categories as $categorie)
+        {
+            $article->removeCategorie($categorie);
+        }
+
+        // On déclenche la modification
+        $em->flush(); 
 
         return $this->render('BenijacoBlogBundle:Blog:supprimer.html.twig');
     }

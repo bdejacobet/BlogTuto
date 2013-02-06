@@ -1,20 +1,28 @@
 {% extends "BenijacoBlogBundle::layout.html.twig" %}
  
 {% block title %}
-    Lecture d'un article - {{ parent() }}
+  Lecture d'un article - {{ parent() }}
 {% endblock %}
  
 {% block benijacoblog_body %}
  
   <h2>
-  {# On vérifie qu'une image soit bien associée à l'article #}
-  {% if article.image is not null %}
-    <img src="{{ article.image.url }}" alt="{{ article.image.alt }}" />
-  {% endif %}
+    {# On vérifie qu'une image soit bien associée à l'article #}
+    {% if article.image is not null %}
+      <img src="{{ article.image.url }}" alt="{{ article.image.alt }}" />
+    {% endif %}
  
     {{ article.titre }}
   </h2>
   <i>Par {{ article.auteur }}, le {{ article.date|date('d/m/Y') }}</i>
+ 
+  {% if article.categories.count > 0 %}
+    - Catégories :
+    {% for categorie in article.categories %}
+      {{ categorie.nom }}
+      {% if not loop.last %} - {% endif %}
+    {% endfor %}
+  {% endif %}
  
   <div class="well">
     {{ article.contenu }}

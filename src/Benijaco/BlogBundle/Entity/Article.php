@@ -17,6 +17,11 @@ class Article
     * @ORM\OneToOne(targetEntity="Benijaco\BlogBundle\Entity\Image", cascade={"persist"})
     */
     private $image;
+    
+    /**
+    * @ORM\ManyToMany(targetEntity="Benijaco\BlogBundle\Entity\Categorie", cascade={"persist"})
+    */
+    private $categories;
   
     /**
      * @var integer
@@ -217,5 +222,38 @@ class Article
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Add categories
+     *
+     * @param \Benijaco\BlogBundle\Entity\Categorie $categories
+     * @return Article
+     */
+    public function addCategorie(\Benijaco\BlogBundle\Entity\Categorie $categories)
+    {
+        $this->categories[] = $categories;
+    
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \Benijaco\BlogBundle\Entity\Categorie $categories
+     */
+    public function removeCategorie(\Benijaco\BlogBundle\Entity\Categorie $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }
