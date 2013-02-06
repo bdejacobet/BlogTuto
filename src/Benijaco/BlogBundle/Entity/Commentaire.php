@@ -5,18 +5,19 @@ namespace Benijaco\BlogBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Article
+ * Commentaire
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Benijaco\BlogBundle\Entity\ArticleRepository")
+ * @ORM\Entity(repositoryClass="Benijaco\BlogBundle\Entity\CommentaireRepository")
  */
-class Article
+class Commentaire
 {
     
     /**
-    * @ORM\OneToOne(targetEntity="Benijaco\BlogBundle\Entity\Image", cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="Benijaco\BlogBundle\Entity\Article")
+    * @ORM\JoinColumn(nullable=false)
     */
-    private $image;
+    private $article;
   
     /**
      * @var integer
@@ -37,13 +38,6 @@ class Article
     /**
      * @var string
      *
-     * @ORM\Column(name="titre", type="string", length=255)
-     */
-    private $titre;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="auteur", type="string", length=255)
      */
     private $auteur;
@@ -55,21 +49,6 @@ class Article
      */
     private $contenu;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="publication", type="boolean")
-     */
-    private $publication;
-
-    /**
-     * constructeur
-     */
-    public function __construct()
-    {
-        $this->date = new \Datetime();
-        $this->publication = true;
-    }
 
     /**
      * Get id
@@ -85,7 +64,7 @@ class Article
      * Set date
      *
      * @param \DateTime $date
-     * @return Article
+     * @return Commentaire
      */
     public function setDate($date)
     {
@@ -105,33 +84,10 @@ class Article
     }
 
     /**
-     * Set titre
-     *
-     * @param string $titre
-     * @return Article
-     */
-    public function setTitre($titre)
-    {
-        $this->titre = $titre;
-    
-        return $this;
-    }
-
-    /**
-     * Get titre
-     *
-     * @return string 
-     */
-    public function getTitre()
-    {
-        return $this->titre;
-    }
-
-    /**
      * Set auteur
      *
      * @param string $auteur
-     * @return Article
+     * @return Commentaire
      */
     public function setAuteur($auteur)
     {
@@ -154,7 +110,7 @@ class Article
      * Set contenu
      *
      * @param string $contenu
-     * @return Article
+     * @return Commentaire
      */
     public function setContenu($contenu)
     {
@@ -174,48 +130,25 @@ class Article
     }
 
     /**
-     * Set publication
+     * Set article
      *
-     * @param boolean $publication
-     * @return Article
+     * @param \Benijaco\BlogBundle\Entity\Article $article
+     * @return Commentaire
      */
-    public function setPublication($publication)
+    public function setArticle(\Benijaco\BlogBundle\Entity\Article $article)
     {
-        $this->publication = $publication;
+        $this->article = $article;
     
         return $this;
     }
 
     /**
-     * Get publication
+     * Get article
      *
-     * @return boolean 
+     * @return \Benijaco\BlogBundle\Entity\Article 
      */
-    public function getPublication()
+    public function getArticle()
     {
-        return $this->publication;
-    }
-
-    /**
-     * Set image
-     *
-     * @param \Benijaco\BlogBundle\Entity\Image $image
-     * @return Article
-     */
-    public function setImage(\Benijaco\BlogBundle\Entity\Image $image = null)
-    {
-        $this->image = $image;
-    
-        return $this;
-    }
-
-    /**
-     * Get image
-     *
-     * @return \Benijaco\BlogBundle\Entity\Image 
-     */
-    public function getImage()
-    {
-        return $this->image;
+        return $this->article;
     }
 }

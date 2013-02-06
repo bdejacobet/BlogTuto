@@ -32,17 +32,29 @@ class BlogController extends Controller
     public function voirAction($id)
     {
         
-        // On récupère le repository
-        $repository = $this->getDoctrine()
-                            ->getManager()
-                            ->getRepository('BenijacoBlogBundle:Article');
-
+        // On récupère l'EntityManager
+        $em = $this->getDoctrine()
+                   ->getEntityManager();
+ 
         // On récupère l'entité correspondant à l'id $id
-        $article = $repository->find($id);
-          
+        $article = $em->getRepository('BenijacoBlogBundle:Article')
+                      ->find($id);
+ 
+        // Si pas d'article
+        if($article === null)
+        {
+            throw $this->createNotFoundException('Article[id='.$id.'] inexistant.');
+        }
+ 
+        // On récupère la liste des commentaires
+        $liste_commentaires = $em->getRepository('BenijacoBlogBundle:Commentaire')
+                                 ->findAll();
+ 
         return $this->render('BenijacoBlogBundle:Blog:voir.html.twig', array(
-            'article' => $article
+          'article'        => $article,
+          'liste_commentaires' => $liste_commentaires
         ));
+        
     }
     
     public function ajouterAction()
@@ -58,15 +70,31 @@ class BlogController extends Controller
         $image = new Image();
         $image->setUrl('http://uploads.siteduzero.com/icones/478001_479000/478657.png');
         $image->setAlt('Logo Symfony2');
-
+        
         // On lie l'image à l'article
         $article->setImage($image);
+         
+        // Création d'un premier commentaire
+        $commentaire1 = new Commentaire();
+        $commentaire1->setAuteur('winzou');
+        $commentaire1->setContenu('On veut les photos !');
+
+        // Création d'un deuxième commentaire, par exemple
+        $commentaire2 = new Commentaire();
+        $commentaire2->setAuteur('Choupy');
+        $commentaire2->setContenu('Les photos arrivent !');
+
+        // On lie les commentaires à l'article
+        $commentaire1->setArticle($article);
+        $commentaire2->setArticle($article);
 
         // On récupére l'EntityManager
         $em = $this->getDoctrine()->getManager();
 
         // Etape 1 : On « persiste » l'entité
         $em->persist($article);
+        $em->persist($commentaire1);
+        $em->persist($commentaire2);
 
         // Etape 2 : On « flush » tout ce qui a été persisté avant
         $em->flush();
