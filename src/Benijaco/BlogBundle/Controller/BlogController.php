@@ -9,6 +9,8 @@ use Benijaco\BlogBundle\Entity\Article;
 use Benijaco\BlogBundle\Entity\Image;
 use Benijaco\BlogBundle\Entity\Commentaire;
 use Benijaco\BlogBundle\Entity\Categorie;
+use Benijaco\BlogBundle\Entity\Competence;
+use Benijaco\BlogBundle\Entity\ArticleCompetence;
 
 class BlogController extends Controller
 {
@@ -51,16 +53,26 @@ class BlogController extends Controller
         // On récupère la liste des commentaires
         $liste_commentaires = $em->getRepository('BenijacoBlogBundle:Commentaire')
                                  ->findAll();
+        
+        // On récupère les articleCompetence pour l'article $article
+        $liste_articleCompetence = $em->getRepository('BenijacoBlogBundle:ArticleCompetence')
+                                ->findByArticle($article->getId());
  
+
         return $this->render('BenijacoBlogBundle:Blog:voir.html.twig', array(
           'article'        => $article,
-          'liste_commentaires' => $liste_commentaires
+          'liste_commentaires' => $liste_commentaires,
+        'liste_articleCompetence'  => $liste_articleCompetence
         ));
         
     }
     
     public function ajouterAction()
     { 
+        
+        
+        // CREATION D'UN ARTICLE
+        //----------------------------------------------------------
         
         // Création de l'entité
         $article = new Article();
@@ -92,15 +104,42 @@ class BlogController extends Controller
 
         // On récupére l'EntityManager
         $em = $this->getDoctrine()->getManager();
-        
-        
 
-        // Etape 1 : On « persiste » l'entité
+        // On « persiste » l'entité
         $em->persist($article);
         $em->persist($commentaire1);
         $em->persist($commentaire2);
 
-        // Etape 2 : On « flush » tout ce qui a été persisté avant
+        // On « flush » pour créer l'aricle
+        $em->flush();
+        
+        
+        // ASSOCIATION DE COMPETENCES
+        //----------------------------------------------------------
+        
+        // Les compétences existent déjà, on les récupère depuis la bdd
+        $liste_competences = $em->getRepository('BenijacoBlogBundle:Competence')
+                                ->findAll(); // Pour l'exemple, notre Article contient toutes les Competences
+
+        // Pour chaque compétence
+        foreach($liste_competences as $i => $competence)
+        {
+          // On crée une nouvelle "relation entre 1 article et 1 compétence"
+          $articleCompetence[$i] = new ArticleCompetence;
+
+          // On la lie à l'article, qui est ici toujours le même
+          $articleCompetence[$i]->setArticle($article);
+          // On la lie à la compétence, qui change ici dans la boucle foreach
+          $articleCompetence[$i]->setCompetence($competence);
+
+          // Arbitrairement, on dit que chaque compétence est requis au niveau 'Expert'
+          $articleCompetence[$i]->setNiveau('Expert');
+
+          // Et bien sûr, on persiste cette entité de relation, propriétaire des deux autres relations
+          $em->persist($articleCompetence[$i]);
+        }
+
+        // On déclenche l'enregistrement
         $em->flush();
 
         // si POST : ajout article
