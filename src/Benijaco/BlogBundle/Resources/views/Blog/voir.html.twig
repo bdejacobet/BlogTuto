@@ -39,6 +39,17 @@
     </div>
   {% endif %}
  
+  {% if liste_commentaires|length > 0 %}
+    <div>
+      Commentaires de cet article :
+      <ul>
+        {% for commentaire in liste_commentaires %}
+          <li>{{ commentaire.auteur }} : {{ commentaire.contenu }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+ 
   <p>
     <a href="{{ path('benijacoblog_accueil') }}" class="btn">
       <i class="icon-chevron-left"></i>

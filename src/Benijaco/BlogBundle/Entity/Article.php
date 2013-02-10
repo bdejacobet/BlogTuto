@@ -3,16 +3,18 @@
 namespace Benijaco\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Article
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Benijaco\BlogBundle\Entity\ArticleRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Article
 {
-    
+           
     /**
     * @ORM\OneToOne(targetEntity="Benijaco\BlogBundle\Entity\Image", cascade={"persist"})
     */
@@ -22,6 +24,11 @@ class Article
     * @ORM\ManyToMany(targetEntity="Benijaco\BlogBundle\Entity\Categorie", cascade={"persist"})
     */
     private $categories;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="Benijaco\BlogBundle\Entity\Commentaire", mappedBy="article")
+    */
+    private $commentaires; 
   
     /**
      * @var integer
@@ -39,6 +46,13 @@ class Article
      */
     private $date;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateEdition", type="datetime")
+     */
+    private $dateEdition;    
+    
     /**
      * @var string
      *
@@ -66,6 +80,12 @@ class Article
      * @ORM\Column(name="publication", type="boolean")
      */
     private $publication;
+    
+    /**
+    * @Gedmo\Slug(fields={"titre"})
+    * @ORM\Column(length=128, unique=true)
+    */
+    private $slug;
 
     /**
      * constructeur
@@ -75,6 +95,7 @@ class Article
         $this->date = new \Datetime();
         $this->publication = true;
     }
+    
 
     /**
      * Get id
@@ -255,5 +276,95 @@ class Article
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    /**
+     * Add commentaires
+     *
+     * @param \Benijaco\BlogBundle\Entity\Commentaire $commentaires
+     * @return Article
+     */
+    public function addCommentaire(\Benijaco\BlogBundle\Entity\Commentaire $commentaires)
+    {
+        $this->commentaires[] = $commentaires;
+        $commentaires->setArticle($this);
+    
+        return $this;
+    }
+
+    /**
+     * Remove commentaires
+     *
+     * @param \Benijaco\BlogBundle\Entity\Commentaire $commentaires
+     */
+    public function removeCommentaire(\Benijaco\BlogBundle\Entity\Commentaire $commentaires)
+    {
+        $this->commentaires->removeElement($commentaires);
+        // Et si notre relation était facultative (nullable=true, ce qui n'est pas notre cas ici attention) :       
+        // $commentaire->setArticle(null);
+    }
+
+    /**
+     * Get commentaires
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCommentaires()
+    {
+        return $this->commentaires;
+    }
+    
+    /**
+    * @ORM\PreUpdate
+    */
+    public function updateDateEdition()
+    {
+      $this->setDateEdition(new \Datetime());
+    }
+
+    /**
+     * Set dateEdition
+     *
+     * @param \DateTime $dateEdition
+     * @return Article
+     */
+    public function setDateEdition($dateEdition)
+    {
+        $this->dateEdition = $dateEdition;
+    
+        return $this;
+    }
+
+    /**
+     * Get dateEdition
+     *
+     * @return \DateTime 
+     */
+    public function getDateEdition()
+    {
+        return $this->dateEdition;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Article
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

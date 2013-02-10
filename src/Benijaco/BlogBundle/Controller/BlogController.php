@@ -14,55 +14,57 @@ use Benijaco\BlogBundle\Entity\ArticleCompetence;
 
 class BlogController extends Controller
 {
-    public function indexAction()
+    public function indexAction($page)
     {
-
+        
         if( isset($page) && $page < 1 ) {
             throw $this->createNotFoundException('Page inexistante (page = '.$page.')');
         }
 
-        // Ici, on récupérera la liste des articles
-        $articles = array(
-          array('titre' => 'Mon weekend a Phi Phi Island !',          'id' => 1, 'auteur' => 'winzou',  'contenu' => 'Ce weekend était trop bien. Blabla…',  'date' => new \Datetime()),
-          array('titre' => 'Repetition du National Day de Singapour', 'id' => 2, 'auteur' => 'winzou',  'contenu' => 'Bientôt prêt pour le jour J. Blabla…', 'date' => new \Datetime()),
-          array('titre' => 'Chiffre d\'affaire en hausse',            'id' => 3, 'auteur' => 'M@teo21', 'contenu' => '+500% sur 1 an, fabuleux. Blabla…',    'date' => new \Datetime())
-        );     
+        // Récupération EntityManager
+        $em = $this->getDoctrine()
+                   ->getManager();
+
+        // Récupération des articles en fonction de la page
+        $liste_articles = $em->getRepository('BenijacoBlogBundle:Article')
+                             ->findBy(array(), array('date' => 'desc'),5, ($page*5)-5);  
 
         return $this->render('BenijacoBlogBundle:Blog:index.html.twig', array(
-            'articles' => $articles
+            'liste_articles' => $liste_articles
         ));
     }
+    
     
     public function voirAction($id)
     {
         
-        // On récupère l'EntityManager
+        // Récupération EntityManager
         $em = $this->getDoctrine()
-                   ->getEntityManager();
- 
-        // On récupère l'entité correspondant à l'id $id
+                   ->getManager();
+
+        // Récupération article
         $article = $em->getRepository('BenijacoBlogBundle:Article')
                       ->find($id);
  
-        // Si pas d'article
+        // Si l'article n'existe pas
         if($article === null)
         {
             throw $this->createNotFoundException('Article[id='.$id.'] inexistant.');
         }
  
-        // On récupère la liste des commentaires
+        // Récupération des commentaires de l'article
         $liste_commentaires = $em->getRepository('BenijacoBlogBundle:Commentaire')
-                                 ->findAll();
+                                 ->findByArticle($article->getId());
         
-        // On récupère les articleCompetence pour l'article $article
+        // Récupération des articleCompetence de l'article
         $liste_articleCompetence = $em->getRepository('BenijacoBlogBundle:ArticleCompetence')
-                                ->findByArticle($article->getId());
+                                      ->findByArticle($article->getId());
  
 
         return $this->render('BenijacoBlogBundle:Blog:voir.html.twig', array(
-          'article'        => $article,
-          'liste_commentaires' => $liste_commentaires,
-        'liste_articleCompetence'  => $liste_articleCompetence
+            'article' => $article,
+            'liste_commentaires' => $liste_commentaires,
+            'liste_articleCompetence'  => $liste_articleCompetence
         ));
         
     }
@@ -139,7 +141,7 @@ class BlogController extends Controller
           $em->persist($articleCompetence[$i]);
         }
 
-        // On déclenche l'enregistrement
+        // Déclenchement de l'enregistrement
         $em->flush();
 
         // si POST : ajout article
@@ -148,7 +150,7 @@ class BlogController extends Controller
             // message flash pour confirmer ajout article
             $this->get('session')->getFlashBag()->add('notice', 'Article bien enregistré');
 
-            // redirection vers la page de visualisation de cet article
+            // Redirection vers la page de visualisation de cet article
             return $this->redirect( $this->generateUrl('benijacoblog_voir', array('id' => $article->getId())) );
         }
 
@@ -159,13 +161,13 @@ class BlogController extends Controller
     public function modifierAction($id)
     {
         
-        // On récupère l'EntityManager
+        // Récupération EntityManager
         $em = $this->getDoctrine()
-        ->getManager();
+                   ->getManager();
 
-        // On récupère l'entité correspondant à l'id $id
+        // Récupération article
         $article = $em->getRepository('BenijacoBlogBundle:Article')
-        ->find($id);
+                                ->find($id);
 
         // si l'article n'existe pas
         if($article === null)
@@ -173,17 +175,17 @@ class BlogController extends Controller
             throw $this->createNotFoundException('Article[id='.$id.'] inexistant.');
         }
 
-        // On récupère toutes les catégories :
+        // Récupération des catégories
         $liste_categories = $em->getRepository('BenijacoBlogBundle:Categorie')
-        ->findAll();
+                                ->findAll();
 
-        // On boucle sur les catégories pour les lier à l'article
+        // Liaison des catégories à l'article
         foreach($liste_categories as $categorie)
         {
             $article->addCategorie($categorie);
         }
 
-        // On déclenche l'enregistrement
+        // Déclenchement de l'enregistrement
         $em->flush();
 
         return $this->render('BenijacoBlogBundle:Blog:modifier.html.twig', array(
@@ -194,30 +196,31 @@ class BlogController extends Controller
     public function supprimerAction($id)
     {
         
-        // On récupère l'EntityManager
+        // Récupération EntityManager
         $em = $this->getDoctrine()
                    ->getManager();
 
-        // On récupère l'entité correspondant à l'id $id
-        $article = $em->getRepository('SdzBlogBundle:Article')
+        // Récupération article
+        $article = $em->getRepository('BenijacoBlogBundle:Article')
                       ->find($id);
 
+        // si l'article n'existe pas
         if($article === null)
         {
             throw $this->createNotFoundException('Article[id='.$id.'] inexistant.');
         }
 
-        // On récupère toutes les catégories :
-        $liste_categories = $em->getRepository('SdzBlogBundle:Categorie')
+        // Récupération des catégories :
+        $liste_categories = $em->getRepository('BenijacoBlogBundle:Categorie')
                                ->findAll();
 
-        // On enlève toutes ces catégories de l'article
+        // Suppression des catégories de l'article
         foreach($liste_categories as $categorie)
         {
             $article->removeCategorie($categorie);
         }
 
-        // On déclenche la modification
+        // Déclenchement de l'enregistrement
         $em->flush(); 
 
         return $this->render('BenijacoBlogBundle:Blog:supprimer.html.twig');
@@ -225,15 +228,17 @@ class BlogController extends Controller
     
     public function menuAction()
     {
-        // Ici on fixe en dur une liste, bien entendu par la suite on la récupérera depuis la BDD !
-        $liste = array(
-          array('id' => 2, 'titre' => 'Mon dernier weekend !'),
-          array('id' => 5, 'titre' => 'Sortie de Symfony2.1'),
-          array('id' => 9, 'titre' => 'Petit test')
-        );
+
+        // Récupération EntityManager
+        $em = $this->getDoctrine()
+                   ->getManager();
+
+        // Récupération des 3 premiers articles
+        $liste_articles = $em->getRepository('BenijacoBlogBundle:Article')
+                             ->findBy(array(), array('date' => 'desc'),3,0);
 
         return $this->render('BenijacoBlogBundle:Blog:menu.html.twig', array(
-          'liste_articles' => $liste 
+          'liste_articles' => $liste_articles 
         ));
     }
 }

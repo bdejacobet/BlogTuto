@@ -14,7 +14,7 @@ class Commentaire
 {
     
     /**
-    * @ORM\ManyToOne(targetEntity="Benijaco\BlogBundle\Entity\Article")
+    * @ORM\ManyToOne(targetEntity="Benijaco\BlogBundle\Entity\Article", inversedBy="commentaires")
     * @ORM\JoinColumn(nullable=false)
     */
     private $article;
