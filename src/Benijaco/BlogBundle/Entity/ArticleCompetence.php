@@ -25,75 +25,59 @@ class ArticleCompetence
   /**
    * @ORM\Column()
    */
-  private $niveau;
+  private $niveau; // Ici j'ai un attribut de relation, que j'ai appelé « niveau »
  
-
-    /**
-     * Set niveau
-     *
-     * @param string $niveau
-     * @return ArticleCompetence
-     */
-    public function setNiveau($niveau)
-    {
-        $this->niveau = $niveau;
-    
-        return $this;
-    }
-
-    /**
-     * Get niveau
-     *
-     * @return string 
-     */
-    public function getNiveau()
-    {
-        return $this->niveau;
-    }
-
-    /**
-     * Set article
-     *
-     * @param \Benijaco\BlogBundle\Entity\Article $article
-     * @return ArticleCompetence
-     */
-    public function setArticle(\Benijaco\BlogBundle\Entity\Article $article)
-    {
-        $this->article = $article;
-    
-        return $this;
-    }
-
-    /**
-     * Get article
-     *
-     * @return \Benijaco\BlogBundle\Entity\Article 
-     */
-    public function getArticle()
-    {
-        return $this->article;
-    }
-
-    /**
-     * Set competence
-     *
-     * @param \Benijaco\BlogBundle\Entity\Competence $competence
-     * @return ArticleCompetence
-     */
-    public function setCompetence(\Benijaco\BlogBundle\Entity\Competence $competence)
-    {
-        $this->competence = $competence;
-    
-        return $this;
-    }
-
-    /**
-     * Get competence
-     *
-     * @return \Benijaco\BlogBundle\Entity\Competence 
-     */
-    public function getCompetence()
-    {
-        return $this->competence;
-    }
+  /**
+   * @param string $niveau
+   * @return Article_Competence
+   */
+  public function setNiveau($niveau)
+  {
+    $this->niveau = $niveau;
+    return $this;
+  }
+ 
+  /**
+   * @return string
+   */
+  public function getNiveau()
+  {
+    return $this->niveau;
+  }
+ 
+  /**
+   * @param Benijaco\BlogBundle\Entity\Article $article
+   * @return ArticleCompetence
+   */
+  public function setArticle(\Benijaco\BlogBundle\Entity\Article $article)
+  {
+    $this->article = $article;
+    return $this;
+  }
+ 
+  /**
+   * @return Benijaco\BlogBundle\Entity\Article
+   */
+  public function getArticle()
+  {
+    return $this->article;
+  }
+ 
+  /**
+   * @param Benijaco\BlogBundle\Entity\Competence $competence
+   * @return ArticleCompetence
+   */
+  public function setCompetence(\Benijaco\BlogBundle\Entity\Competence $competence)
+  {
+    $this->competence = $competence;
+    return $this;
+  }
+ 
+  /**
+   * @return Benijaco\BlogBundle\Entity\Competence
+   */
+  public function getCompetence()
+  {
+    return $this->competence;
+  }
 }

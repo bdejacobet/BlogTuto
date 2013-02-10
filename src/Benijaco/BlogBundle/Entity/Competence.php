@@ -1,64 +1,56 @@
 <?php
-
+// src/Benijaco/BlogBundle/Entity/Competence.php
+ 
 namespace Benijaco\BlogBundle\Entity;
-
+ 
 use Doctrine\ORM\Mapping as ORM;
-
+ 
 /**
- * Competence
- *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Benijaco\BlogBundle\Entity\CompetenceRepository")
  */
 class Competence
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=255)
-     */
-    private $nom;
-
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set nom
-     *
-     * @param string $nom
-     * @return Competence
-     */
-    public function setNom($nom)
-    {
-        $this->nom = $nom;
-    
-        return $this;
-    }
-
-    /**
-     * Get nom
-     *
-     * @return string 
-     */
-    public function getNom()
-    {
-        return $this->nom;
-    }
+  /**
+   * @var integer $id
+   *
+   * @ORM\Column(name="id", type="integer")
+   * @ORM\Id
+   * @ORM\GeneratedValue(strategy="AUTO")
+   */
+  private $id;
+ 
+  /**
+   * @var string $nom
+   *
+   * @ORM\Column(name="nom", type="string", length=255)
+   */
+  private $nom;
+ 
+ 
+  /**
+   * @return integer
+   */
+  public function getId()
+  {
+    return $this->id;
+  }
+ 
+  /**
+   * @param string $nom
+   * @return Competence
+   */
+  public function setNom($nom)
+  {
+    $this->nom = $nom;
+    return $this;
+  }
+ 
+  /**
+   * @return string
+   */
+  public function getNom()
+  {
+    return $this->nom;
+  }
 }
