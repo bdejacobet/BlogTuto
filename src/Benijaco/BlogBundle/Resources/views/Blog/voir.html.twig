@@ -1,0 +1,29 @@
+{# src/Benijaco/BlogBundle/Resources/views/Blog/voir.html.twig #}
+ 
+{% extends "BenijacoBlogBundle::layout.html.twig" %}
+ 
+{% block title %}
+  Lecture d'un article - {{ parent() }}
+{% endblock %}
+ 
+{% block benijacoblog_body %}
+ 
+  {# Ici, on inclut la vue #}
+  {% include "BenijacoBlogBundle:Blog:article.html.twig" %}
+ 
+  <p>
+    <a href="{{ path('benijacoblog_accueil') }}" class="btn">
+      <i class="icon-chevron-left"></i>
+      Retour à la liste
+    </a>
+    <a href="{{ path('benijacoblog_modifier', {'id': article.id}) }}" class="btn">
+      <i class="icon-edit"></i>
+      Modifier l'article
+    </a>
+    <a href="{{ path('benijacoblog_supprimer', {'id': article.id}) }}" class="btn">
+      <i class="icon-trash"></i>
+      Supprimer l'article
+    </a>
+  </p>
+ 
+{% endblock %}

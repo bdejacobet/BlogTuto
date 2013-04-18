@@ -1,3 +1,27 @@
-HelloTheWorld:
-    pattern:  /hello-world
-    defaults: { _controller: BenijacoBlogBundle:Blog:index }
+benijacoblog_accueil:
+    pattern:   /{page}
+    defaults:  { _controller: BenijacoBlogBundle:Blog:index, page: 1 }
+    requirements:
+        page:  \d*
+
+benijacoblog_voir:
+    pattern:   /article/{id}
+    defaults:  { _controller: BenijacoBlogBundle:Blog:voir }
+    requirements:
+        id:  \d+
+
+benijacoblog_ajouter:
+    pattern:   /ajouter
+    defaults:  { _controller: BenijacoBlogBundle:Blog:ajouter }
+
+benijacoblog_modifier:
+    pattern:   /modifier/{id}
+    defaults:  { _controller: BenijacoBlogBundle:Blog:modifier }
+    requirements:
+        id:  \d+
+
+benijacoblog_supprimer:
+    pattern:   /supprimer/{id}
+    defaults:  { _controller: BenijacoBlogBundle:Blog:supprimer }
+    requirements:
+        id:  \d+
