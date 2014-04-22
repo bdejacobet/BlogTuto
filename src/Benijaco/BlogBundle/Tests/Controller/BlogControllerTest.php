@@ -6,8 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {
-    public function testSimple()
+    public function testOk()
     {
         $this->assertEquals(0, 0);
+    }
+
+    public function testKo()
+    {
+        $this->assertEquals(1, 0);
     }
 }
