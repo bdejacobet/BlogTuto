@@ -5,6 +5,10 @@ php:
   - 5.3
   - 5.4
 
-before_script: composer install
+before_script: composer install --dev
 
-script: phpunit -c app
+script: phpunit -c app --coverage-text
+
+notifications:
+  email:
+    - benijaco@gmail.com
