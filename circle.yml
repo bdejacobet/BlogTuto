@@ -2,7 +2,11 @@ machine:
   php:
     version: 5.3.3
 
-# use PHPunit for testing
+
 test:
+  # use PHPunit for testing
   override:
     - phpunit -c app/phpunit.xml.dist
+  # lancement test SensioLabs Insight
+  post: 
+    - 'curl -X POST -H "Accept: application/vnd.com.sensiolabs.insight+xml" "https://56d75495-85ba-4894-9cd6-1033c25cc168:8bf2365488e3324ad8405b43b414c6571a608bf1ea10c3440e137c06a55c0792@insight.sensiolabs.com/api/projects/94ad6866-a596-4429-8bef-759b7933c7c2/analyses"'
