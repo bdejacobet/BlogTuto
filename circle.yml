@@ -5,4 +5,4 @@ machine:
 # use PHPunit for testing
 test:
   override:
-    - phpunit -c|--configuration app/phpunit.xml.dist 
+    - phpunit -c app/phpunit.xml.dist
