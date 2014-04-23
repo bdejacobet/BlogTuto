@@ -5,4 +5,4 @@ machine:
 # use PHPunit for testing
 test:
   override:
-    - phpunit test/unit-tests
+    - phpunit src/Benijaco/BlogBundle/Tests
