@@ -5,4 +5,4 @@ machine:
 # use PHPunit for testing
 test:
   override:
-    - phpunit src/Benijaco/BlogBundle/Tests
+    - phpunit -c|--configuration app/phpunit.xml.dist 
