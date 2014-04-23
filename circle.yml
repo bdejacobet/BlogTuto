@@ -1,0 +1,8 @@
+machine:
+  php:
+    version: 5.3.3
+
+# use PHPunit for testing
+test:
+  override:
+    - phpunit test/unit-tests
