@@ -11,8 +11,5 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals(0, 0);
     }
 
-    public function testKo()
-    {
-        $this->assertEquals(1, 0);
-    }
+
 }
