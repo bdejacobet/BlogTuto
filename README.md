@@ -9,6 +9,7 @@ http://fr.openclassrooms.com/informatique/cours/developpez-votre-site-web-avec-l
 - tester la mise en place de l'integration continue via TravisCi
 - tester la mise en place de l'integration continue via CircleCi
 - tester la mise en place de l'analyse via SensionLabs Insight
+- tester la mise en place de l'analyse via Scrutinizer
 
 
 [![Build Status](https://travis-ci.org/bdejacobet/BlogTuto.svg?branch=master)](https://travis-ci.org/bdejacobet/BlogTuto)

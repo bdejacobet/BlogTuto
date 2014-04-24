@@ -2,15 +2,20 @@ language: php
 
 php:
   - 5.3.3
-  - 5.3
-  - 5.4
 
-before_script: composer install --dev
+before_script: 
+  - composer install --dev
 
-script: phpunit -c app --coverage-text
+# lancement test phpunit
+script: 
+  - phpunit --coverage-clover=coverage.clover
 
-# lancement test SensioLabs Insight
-#after_script: 'curl -X POST -H "Accept: application/vnd.com.sensiolabs.insight+xml" "https://56d75495-85ba-4894-9cd6-1033c25cc168:8bf2365488e3324ad8405b43b414c6571a608bf1ea10c3440e137c06a55c0792@insight.sensiolabs.com/api/projects/94ad6866-a596-4429-8bef-759b7933c7c2/analyses"'
+after_script: 
+  # lancement test SensioLabs Insight
+  - 'curl -X POST -H "Accept: application/vnd.com.sensiolabs.insight+xml" "https://56d75495-85ba-4894-9cd6-1033c25cc168:8bf2365488e3324ad8405b43b414c6571a608bf1ea10c3440e137c06a55c0792@insight.sensiolabs.com/api/projects/94ad6866-a596-4429-8bef-759b7933c7c2/analyses"'
+  # lancement test scrutinizer
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
 notifications:
   email:
