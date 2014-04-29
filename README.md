@@ -20,3 +20,6 @@ http://fr.openclassrooms.com/informatique/cours/developpez-votre-site-web-avec-l
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/94ad6866-a596-4429-8bef-759b7933c7c2/mini.png)](https://insight.sensiolabs.com/projects/94ad6866-a596-4429-8bef-759b7933c7c2)
 
 [ ![Codeship Status for bdejacobet/BlogTuto](https://www.codeship.io/projects/249c7380-adc7-0131-306e-1a60827b84d9/status?branch=master)](https://www.codeship.io/projects/19633)
+
+
+* [test doc](./src/Benijaco/BlogBundle/Resources/doc/test.md)
