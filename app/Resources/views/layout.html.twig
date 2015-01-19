@@ -2,14 +2,14 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
- 
+
     <title>{% block title %}Benijaco Blog{% endblock %}</title>
- 
+
     {% block stylesheets %}
       <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" type="text/css" />
     {% endblock %}
   </head>
- 
+
   <body>
     <div class="container">
       <div id="header" class="hero-unit">
@@ -19,7 +19,7 @@
           Lire le tutoriel »
         </a></p>
       </div>
- 
+
       <div class="row">
         <div id="menu" class="span3">
           <h3>Le blog</h3>
@@ -27,27 +27,27 @@
             <li><a href="{{ path('benijacoblog_accueil') }}">Accueil du blog</a></li>
             <li><a href="{{ path('benijacoblog_ajouter') }}">Ajouter un article</a></li>
           </ul>
-                     
-          {% render "BenijacoBlogBundle:Blog:menu" with {'nombre': 3} %}
+
+          {% render(controller("BenijacoBlogBundle:Blog:menu", {'nombre': 3} )) %}
         </div>
         <div id="content" class="span9">
           {% block body %}
           {% endblock %}
         </div>
       </div>
- 
+
       <hr>
  
       <footer>
         <p>BeniJaco Production (BJP).</p>
       </footer>
     </div>
- 
+
   {% block javascripts %}
     {# Ajoutez ces javascripts si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
   {% endblock %}
- 
+
   </body>
 </html>

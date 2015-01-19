@@ -1,14 +1,14 @@
 <?php
 // src/Benijaco/BlogBundle/Entity/Article.php
- 
+
 namespace Benijaco\BlogBundle\Entity;
 
- 
+
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Benijaco\BlogBundle\Validator\AntiFlood as AntiFlood;
- 
+
 /**
  * Benijaco\BlogBundle\Entity\Article
  *
@@ -26,36 +26,42 @@ class Article
    * @ORM\GeneratedValue(strategy="AUTO")
    */
   private $id;
- 
+
   /**
    * @var datetime $date
    *
-   * @ORM\Column(name="date", type="datetime")     
+   * @ORM\Column(name="date", type="datetime")
    * @Assert\DateTime()
    */
   private $date;
- 
+
   /**
    * @var string $titre
    *
    * @ORM\Column(name="titre", type="string", length=255)
-   * @Assert\MinLength(limit=10, message="Le titre doit faire au moins {{ limit }} caractères.")
+   * @Assert\Length(
+   *      min = "2",
+   *      minMessage = "Le titre doit faire au moins {{ limit }} caractères.",
+   * )
    */
   private $titre;
- 
+
   /**
    * @var string $titre
    *
    * @ORM\Column(name="auteur", type="string", length=255)
-   * @Assert\MinLength(limit=10, message="L'auteur doit faire au moins {{ limit }} caractères.")
+   * @Assert\Length(
+   *      min = "2",
+   *      minMessage = "L'auteur doit faire au moins {{ limit }} caractères.",
+   * )
    */
   private $auteur;
- 
+
   /**
    * @ORM\Column(name="publication", type="boolean")
    */
   private $publication;
- 
+
   /**
    * @var text $contenu
    *
@@ -64,35 +70,35 @@ class Article
    * @AntiFlood()
    */
   private $contenu;
-   
+
   /**
    * @ORM\Column(type="date", nullable=true)
    */
   private $dateEdition;
-   
+
   /**
    * @Gedmo\Slug(fields={"titre"})
    * @ORM\Column(length=128, unique=true)
    */
   private $slug;
- 
+
   /**
    * @ORM\OneToOne(targetEntity="Benijaco\BlogBundle\Entity\Image", cascade={"persist"})
    * @Assert\Valid()
    */
   private $image;
- 
+
   /**
    * @ORM\ManyToMany(targetEntity="Benijaco\BlogBundle\Entity\Categorie", cascade={"persist"})
    */
   private $categories;
- 
+
   /**
    * @ORM\OneToMany(targetEntity="Benijaco\BlogBundle\Entity\Commentaire", mappedBy="article")
    */
   private $commentaires; // Ici commentaires prend un « s », car un article a plusieurs commentaires !
- 
- 
+
+
   public function __construct()
   {
     $this->date     = new \Datetime;
@@ -100,7 +106,7 @@ class Article
     $this->categories   = new \Doctrine\Common\Collections\ArrayCollection();
     $this->commentaires = new \Doctrine\Common\Collections\ArrayCollection();
   }
-   
+
   /**
    * @ORM\PreUpdate
    * Callback pour mettre à jour la date d'édition à chaque modification de l'entité
@@ -109,7 +115,7 @@ class Article
   {
     $this->setDateEdition(new \Datetime());
   }
- 
+
   /**
    * @return integer
    */
@@ -117,7 +123,7 @@ class Article
   {
     return $this->id;
   }
- 
+
   /**
    * @param datetime $date
    * @return Article
@@ -127,7 +133,7 @@ class Article
     $this->date = $date;
     return $this;
   }
- 
+
   /**
    * @return datetime
    */
@@ -135,7 +141,7 @@ class Article
   {
     return $this->date;
   }
- 
+
   /**
    * @param string $titre
    * @return Article
@@ -145,7 +151,7 @@ class Article
     $this->titre = $titre;
     return $this;
   }
- 
+
   /**
    * @return string
    */
@@ -153,7 +159,7 @@ class Article
   {
     return $this->titre;
   }
- 
+
   /**
    * @param text $contenu
    * @return Article
@@ -163,7 +169,7 @@ class Article
     $this->contenu = $contenu;
     return $this;
   }
- 
+
   /**
    * @return text
    */
@@ -171,7 +177,7 @@ class Article
   {
     return $this->contenu;
   }
- 
+
   /**
    * @param boolean $publication
    * @return Article
@@ -181,7 +187,7 @@ class Article
     $this->publication = $publication;
     return $this;
   }
- 
+
   /**
    * @return boolean
    */
@@ -189,7 +195,7 @@ class Article
   {
     return $this->publication;
   }
- 
+
   /**
    * @param string $auteur
    * @return Article
@@ -199,7 +205,7 @@ class Article
     $this->auteur = $auteur;
     return $this;
   }
- 
+
   /**
    * @return string
    */
@@ -207,7 +213,7 @@ class Article
   {
     return $this->auteur;
   }
- 
+
   /**
    * @param Benijaco\BlogBundle\Entity\Image $image
    * @return Article
@@ -217,7 +223,7 @@ class Article
     $this->image = $image;
     return $this;
   }
- 
+
   /**
    * @return Benijaco\BlogBundle\Entity\Image
    */
@@ -225,7 +231,7 @@ class Article
   {
     return $this->image;
   }
- 
+
   /**
    * @param Benijaco\BlogBundle\Entity\Categorie $categorie
    * @return Article
@@ -235,7 +241,7 @@ class Article
     $this->categories[] = $categorie;
     return $this;
   }
- 
+
   /**
    * @param Benijaco\BlogBundle\Entity\Categorie $categorie
    */
@@ -243,7 +249,7 @@ class Article
   {
     $this->categories->removeElement($categorie);
   }
- 
+
   /**
    * @return Doctrine\Common\Collections\Collection
    */
@@ -251,7 +257,7 @@ class Article
   {
     return $this->categories;
   }
- 
+
   /**
    * @return Doctrine\Common\Collections\Collection
    */
@@ -259,7 +265,7 @@ class Article
   {
     return $this->categories;
   }
- 
+
   /**
    * @param Benijaco\BlogBundle\Entity\Commentaire $commentaire
    * @return Article
@@ -269,7 +275,7 @@ class Article
     $this->commentaires[] = $commentaire;
     return $this;
   }
- 
+
   /**
    * @param Benijaco\BlogBundle\Entity\Commentaire $commentaire
    */
@@ -277,7 +283,7 @@ class Article
   {
     $this->commentaires->removeElement($commentaire);
   }
- 
+
   /**
    * @return Doctrine\Common\Collections\Collection
    */
@@ -285,7 +291,7 @@ class Article
   {
     return $this->commentaires;
   }
- 
+
   /**
    * @param datetime $dateEdition
    * @return Article
@@ -295,7 +301,7 @@ class Article
     $this->dateEdition = $dateEdition;
     return $this;
   }
- 
+
   /**
    * @return date
    */
@@ -303,7 +309,7 @@ class Article
   {
     return $this->dateEdition;
   }
- 
+
   /**
    * @param string $slug
    * @return Article
@@ -313,7 +319,7 @@ class Article
     $this->slug = $slug;
     return $this;
   }
- 
+
   /**
    * @return string
    */
